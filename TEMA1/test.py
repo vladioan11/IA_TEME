@@ -167,3 +167,17 @@ for ax, (name, weight_rule) in zip(axes, methods.items()):
 plt.tight_layout()
 plt.savefig('3_matrici_confuzie_k15.png')
 plt.show()
+# ==========================================
+# 7. EXTRA PENTRU DOCUMENTATIE (STATISTICI SI RAPORT PE CLASE)
+# ==========================================
+print("\n=== STATISTICI DESCRIPTIVE ALE ATRIBUTELOR (INAINTE DE SCALARE) ===")
+stats_df = X.describe().T[['min', 'mean', 'std', 'max']].round(3)
+print(stats_df)
+
+print("\n=== RAPORT DETALIAT PE CLASE (k=15): STANDARD vs INVERSE-DISTANCE ===")
+for name, weight_rule in [('Standard kNN (Uniform)', 'uniform'), ('Inverse-Distance kNN (1/d)', 'distance')]:
+    clf = KNeighborsClassifier(n_neighbors=15, weights=weight_rule)
+    clf.fit(X_train_scaled, y_train)
+    y_pred = clf.predict(X_test_scaled)
+    print(f"\n--- {name} ---")
+    print(classification_report(y_test, y_pred, zero_division=0))
